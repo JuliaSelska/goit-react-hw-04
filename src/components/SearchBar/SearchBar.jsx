@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import styles from './SearchBar.module.css'
+
 
 const SearchBar = ({ onSubmit }) => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -9,8 +11,8 @@ const SearchBar = ({ onSubmit }) => {
     };
 
     return (
-        <header>
-            <form onSubmit={handleSubmit}>
+        <header className={styles.searchBar}>
+            <form onSubmit={handleSubmit} className={styles.serchForm}>
                 <input
                     type="text"
                     autoComplete="off"
@@ -18,6 +20,7 @@ const SearchBar = ({ onSubmit }) => {
                     placeholder="Search images and photos"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
+                    className={styles.serchImput}
                 />
                 <button type="submit">Search</button>
             </form>

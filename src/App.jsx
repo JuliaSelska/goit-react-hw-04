@@ -8,14 +8,22 @@ import toast, { Toaster } from 'react-hot-toast';
 import SearchBar from './components/SearchBar/SearchBar'
 import ImageGallery from './components/ImageGallery/ImageGallery'
 import Loader from './components/Loader/Loader'
+import ErrorMessage from './components/ErrorMessage/ErrorMessage';
+import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn'
+import ImageModal from './components/ImageModal/ImageModal';
+
 
 const ACCESS_KEY = "hRxXyIs8LjiWw29USD0xMbDQ0ofvHUO75pu1Bv3PQ4o";
+
 
 const App = () => {
   const [pictures, setPictures] = useState([]);
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!query) return;
@@ -23,43 +31,60 @@ const App = () => {
     async function fetchPictures() {
       try {
         setIsSearching(true);
+        setError(null);
         const response = await axios.get(
-          `https://api.unsplash.com/search/photos?query=${query}&per_page=10&client_id=${ACCESS_KEY}`
+          `https://api.unsplash.com/search/photos?query=${query}&page=${page}&per_page=10&client_id=${ACCESS_KEY}`
         );
-        setPictures(response.data.results);
+        setPictures((prevPictures) =>
+          page === 1 ? response.data.results : [...prevPictures, ...response.data.results]
+        );
       } catch (error) {
         console.error("Error fetching images", error);
+        setError("Error fetching images. Please try again.");
       } finally {
         setIsSearching(false);
       }
     }
     fetchPictures();
-  }, [query]);
+  }, [query, page]);
 
   const handleSearchSubmit = (searchQuery) => {
     if (searchQuery.trim()) {
       setQuery(searchQuery);
+      setPage(1);
+      setPictures([]);
     } else {
       toast.error("Please enter a search query!");
     }
+  };
+
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setIsModalOpen(false);
   };
 
   return (
     <div>
       <Toaster />
       <SearchBar onSubmit={handleSearchSubmit} />
+
       {isSearching && <Loader />}
-      <ImageGallery pictures={pictures} onImageClick={setSelectedImage} />
-      {selectedImage && (
-        <div className="modal" onClick={() => setSelectedImage(null)}>
-          <div className="modal-content">
-            <img src={selectedImage.urls.regular} alt={selectedImage.alt_description} />
-            <p><strong>Author: </strong> {selectedImage.user.name}</p>
-            <p><strong>Likes: </strong> {selectedImage.likes}</p>
-            <p>{selectedImage.description || "No description available"}</p>
-          </div>
-        </div>
+
+      {error ? (
+        <ErrorMessage message={error} />
+      ) : (
+        <>
+          <ImageGallery pictures={pictures} onImageClick={openModal} />
+          {pictures.length > 0 && <LoadMoreBtn onClick={() => setPage((prev) => prev + 1)} />}
+        </>
       )}
+
+      {isModalOpen && <ImageModal isOpen={isModalOpen} image={selectedImage} onClose={closeModal} />}
     </div>
   );
 };
