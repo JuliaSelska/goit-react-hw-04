@@ -12,7 +12,7 @@ const SearchBar = ({ onSubmit }) => {
 
     return (
         <header className={styles.searchBar}>
-            <form onSubmit={handleSubmit} className={styles.serchForm}>
+            <form onSubmit={handleSubmit} className={styles.searchForm}>
                 <input
                     type="text"
                     autoComplete="off"
@@ -20,9 +20,9 @@ const SearchBar = ({ onSubmit }) => {
                     placeholder="Search images and photos"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className={styles.serchImput}
+                    className={styles.searchInput}
                 />
-                <button type="submit">Search</button>
+                <button className={styles.searchBtn} type="submit">Search</button>
             </form>
         </header>
     );

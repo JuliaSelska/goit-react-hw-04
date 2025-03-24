@@ -1,0 +1,16 @@
+.loadMoreBtn {
+    display: block;
+    margin: auto;
+    margin-top: 80px;
+    margin-bottom: 40px;
+    width: 150px;
+    height: 48px;
+    text-align: center;
+    background-color: #4e75ff;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0.04em;
+    color: #fff;
+    border-radius: 4px;
+}

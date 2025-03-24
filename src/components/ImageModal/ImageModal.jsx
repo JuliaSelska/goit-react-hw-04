@@ -9,18 +9,17 @@ const ImageModal = ({ isOpen, image, onClose }) => {
 
     return (
         <ReactModal
-            isOpen={isOpen}
+            isOpen={!!image}
             onRequestClose={onClose}
             shouldCloseOnOverlayClick={true}
             shouldCloseOnEsc={true}
             className={styles.modalContent}
             overlayClassName={styles.modalOverlay}
         >
-            <button className={styles.closeBtn} onClick={onClose}>Close</button>
-            <img src={image.urls.regular} alt={image.alt_description} />
-            <p><strong>Author: </strong>{image.user.name}</p>
-            <p><strong>Likes: </strong>{image.likes}</p>
-            <p>{image.description || "No description available"}</p>
+            <button className={styles.closeBtn} onClick={onClose}>X</button>
+            <img className={styles.modalContentImg} src={image.urls.small} alt={image.alt_description} />
+            {/* <p><strong className={styles.textInfo}>Author: </strong>{image.user.name}</p>
+            <p><strong className={styles.imageInfo}>Likes: </strong>{image.likes}</p> */}
         </ReactModal>
     );
 };

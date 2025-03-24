@@ -60,12 +60,10 @@ const App = () => {
 
   const openModal = (image) => {
     setSelectedImage(image);
-    setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setSelectedImage(null);
-    setIsModalOpen(false);
   };
 
   return (
@@ -84,7 +82,7 @@ const App = () => {
         </>
       )}
 
-      {isModalOpen && <ImageModal isOpen={isModalOpen} image={selectedImage} onClose={closeModal} />}
+      <ImageModal isOpen={!!selectedImage} image={selectedImage} onClose={closeModal} />
     </div>
   );
 };

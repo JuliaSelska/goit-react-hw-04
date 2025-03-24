@@ -5,10 +5,10 @@ const ImageGallery = ({ pictures, onImageClick }) => {
     if (pictures.length === 0) return null;
 
     return (
-        <ul className="gallery">
+        <ul className={styles.gallery}>
             {pictures.map((image) => (
-                <li key={image.id} className={styles.imageCard}>
-                    <ImageCard image={image} onClick={onImageClick} className={styles.galerryImag} />
+                <li key={image.id} className={styles.galleryCard}>
+                    <ImageCard image={image} onClick={onImageClick} className={styles.galleryImg} />
                 </li>
             ))}
         </ul>
